@@ -17,7 +17,7 @@ public sealed interface ItemData permits ItemDataProcess {
     boolean updateItem(String itemCode, ItemDto itemDto, Connection connection) throws SQLException;
 
     List<ItemDto> getAllItem(Connection connection) throws SQLException;
-    public List<ItemDto> searchCustomers(String query, Connection connection) throws SQLException;
+    public List<ItemDto> searchItem(String query, Connection connection) throws SQLException;
 
     List<String> getNameSuggestions(String query, Connection connection) throws SQLException;
 }

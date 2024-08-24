@@ -43,7 +43,6 @@ public class CustomerController extends HttpServlet {
         }
     }
 
-    //TODO : Create save customer
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         if(!req.getContentType().toLowerCase().startsWith("application/json")||req.getContentType()== null){
@@ -65,7 +64,7 @@ public class CustomerController extends HttpServlet {
         }
 
     }
-    //TODO : delete customer
+
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -75,7 +74,7 @@ public class CustomerController extends HttpServlet {
         ;
         try(var writer = resp.getWriter()){
             var id = req.getParameter("customerId");
-            System.out.println("id");
+
 
             boolean flag = dataProcess.deleteCustomer(id, connection);
             if(flag){
@@ -91,7 +90,7 @@ public class CustomerController extends HttpServlet {
             e.printStackTrace();
         }
     }
-    //TODO : Update Customer
+
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -116,7 +115,7 @@ public class CustomerController extends HttpServlet {
             e.printStackTrace();
         }
     }
-    //TODO : get customer
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -140,7 +139,8 @@ public class CustomerController extends HttpServlet {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        } else if (req.getHeader("Request-Type").equals("search")) {
+        }
+        else if (req.getHeader("Request-Type").equals("search")) {
             String query = req.getParameter("query").toLowerCase();
 
 

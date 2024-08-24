@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class ItemDataProcess implements ItemData {
-    static String SAVE_ITEM = "INSERT INTO item(itemCode,itemName,itemDesc,qto,author,price) VALUES (?,?,?,?,?,?)";
+    static String SAVE_ITEM = "INSERT INTO item(itemCode,itemName,qto,author,price) VALUES (?,?,?,?,?)";
     static String GET_ITEM = "SELECT * FROM item WHERE itemCode = ?";
     static String DELETE_ITEM = "DELETE FROM item WHERE itemCode = ?";
-    static String UPDATE_ITEM = "UPDATE item SET itemName = ?,itemName = ?,itemDesc = ?,qto = ?, author = ?, price = ? WHERE itemCode = ?";
+    static String UPDATE_ITEM = "UPDATE item SET itemName = ?,itemName = ?,qto = ?, author = ?, price = ? WHERE itemCode = ?";
     static  String GET_ALL_ITEM = "SELECT * FROM item";
-    static String SEARCH_ITEM = "SELECT * FROM item WHERE LOWER(itemCode) = ? OR LOWER(itemName) LIKE ? OR LOWER(itemDesc) LIKE ? OR LOWER(author) = ? OR LOWER(price) = ?";
+    static String SEARCH_ITEM = "SELECT * FROM item WHERE LOWER(itemCode) = ? OR LOWER(itemName) LIKE ?  OR LOWER(author) = ? OR LOWER(price) = ?";
     static String GET_ITEM_NAME = "SELECT itemName FROM customer WHERE LOWER(itemName) LIKE ?";
     @Override
     public ItemDto getItem(String itemCode, Connection connection) throws SQLException {
@@ -28,7 +28,6 @@ public final class ItemDataProcess implements ItemData {
             while (resultSet.next()) {
                 itemDto.setItemCode(resultSet.getString("itemCode"));
                 itemDto.setItemName(resultSet.getString("itemName"));
-                itemDto.setItemDescription(resultSet.getString("itemDesc"));
                 itemDto.setQto(resultSet.getInt("qto"));
                 itemDto.setAuthor(resultSet.getString("author"));
                 itemDto.setPrice(resultSet.getInt("price"));
@@ -47,10 +46,9 @@ public final class ItemDataProcess implements ItemData {
             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_ITEM);
             preparedStatement.setString(1,ItemDto.getItemCode());
             preparedStatement.setString(2,ItemDto.getItemName());
-            preparedStatement.setString(3, ItemDto.getItemDescription());
-            preparedStatement.setInt(4,ItemDto.getQto());
-            preparedStatement.setString(5,ItemDto.getAuthor());
-            preparedStatement.setInt(6,ItemDto.getPrice());
+            preparedStatement.setInt(3,ItemDto.getQto());
+            preparedStatement.setString(4,ItemDto.getAuthor());
+            preparedStatement.setInt(5,ItemDto.getPrice());
             if (preparedStatement.executeUpdate() != 0){
                 message = "Customer with id " + ItemDto.getItemCode() + " has been saved";
             }
@@ -80,11 +78,10 @@ public final class ItemDataProcess implements ItemData {
     public boolean updateItem(String itemCode, ItemDto itemDto, Connection connection) throws SQLException {
         try(var pstm = connection.prepareStatement(UPDATE_ITEM)){
             pstm.setString(1,itemDto.getItemName());
-            pstm.setString(2,itemDto.getItemDescription());
-            pstm.setInt(3,itemDto.getQto());
-            pstm.setString(4,itemDto.getAuthor());
-            pstm.setInt(5,itemDto.getPrice());
-            pstm.setString(6,itemCode);
+            pstm.setInt(2,itemDto.getQto());
+            pstm.setString(3,itemDto.getAuthor());
+            pstm.setInt(4,itemDto.getPrice());
+            pstm.setString(5,itemCode);
 
             return pstm.executeUpdate() != 0;
         }
@@ -102,7 +99,6 @@ public final class ItemDataProcess implements ItemData {
                 ItemDto itemDto = new ItemDto(
                         resultSet.getString("itemCode"),
                         resultSet.getString("itemName"),
-                        resultSet.getString("itemDesc"),
                         resultSet.getInt("qto"),
                         resultSet.getString("author"),
                         resultSet.getInt("price")
@@ -118,7 +114,7 @@ public final class ItemDataProcess implements ItemData {
     }
 
     @Override
-    public List<ItemDto> searchCustomers(String query, Connection connection) throws SQLException {
+    public List<ItemDto> searchItem(String query, Connection connection) throws SQLException {
         List<ItemDto> itemDtoList = new ArrayList<>();
         try(var pstm = connection.prepareStatement(SEARCH_ITEM)){
             pstm.setString(1,query);
@@ -131,7 +127,6 @@ public final class ItemDataProcess implements ItemData {
                 ItemDto itemDto = new ItemDto();
                 itemDto.setItemCode(resultSet.getString("itemCode"));
                 itemDto.setItemName(resultSet.getString("itemName"));
-                itemDto.setItemDescription(resultSet.getString("itemDesc"));
                 itemDto.setQto(resultSet.getInt("qto"));
                 itemDto.setAuthor(resultSet.getString("author"));
                 itemDto.setPrice(resultSet.getInt("price"));

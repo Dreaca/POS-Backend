@@ -1035,7 +1035,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     </schema>
     <schema id="301" parent="1" name="posdb">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2024-08-23.16:08:24</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-08-24.20:57:10</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <user id="302" parent="1" name="mysql.infoschema">
@@ -1061,29 +1061,64 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <column id="307" parent="306" name="customerId">
+    <table id="307" parent="301" name="item">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+    </table>
+    <column id="308" parent="306" name="customerId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>varchar(50)|0s</StoredType>
     </column>
-    <column id="308" parent="306" name="customerName">
+    <column id="309" parent="306" name="customerName">
       <Position>2</Position>
       <StoredType>varchar(30)|0s</StoredType>
     </column>
-    <column id="309" parent="306" name="customerAddress">
+    <column id="310" parent="306" name="customerAddress">
       <Position>3</Position>
       <StoredType>varchar(60)|0s</StoredType>
     </column>
-    <column id="310" parent="306" name="customerPhone">
+    <column id="311" parent="306" name="customerPhone">
       <Position>4</Position>
       <StoredType>varchar(15)|0s</StoredType>
     </column>
-    <index id="311" parent="306" name="PRIMARY">
+    <index id="312" parent="306" name="PRIMARY">
       <ColNames>customerId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="312" parent="306" name="PRIMARY">
+    <key id="313" parent="306" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
+    <column id="314" parent="307" name="itemCode">
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StoredType>varchar(100)|0s</StoredType>
+    </column>
+    <column id="315" parent="307" name="itemName">
+      <Position>2</Position>
+      <StoredType>varchar(50)|0s</StoredType>
+    </column>
+    <column id="316" parent="307" name="qto">
+      <Position>3</Position>
+      <StoredType>int|0s</StoredType>
+    </column>
+    <column id="317" parent="307" name="author">
+      <Position>4</Position>
+      <StoredType>varchar(20)|0s</StoredType>
+    </column>
+    <column id="318" parent="307" name="price">
+      <Position>5</Position>
+      <StoredType>int|0s</StoredType>
+    </column>
+    <index id="319" parent="307" name="PRIMARY">
+      <ColNames>itemCode</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <key id="320" parent="307" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
