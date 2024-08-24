@@ -17,4 +17,7 @@ public sealed interface CustomerData permits CustomerDataProcess {
     boolean updateCustomer(String customerId, CustomerDto customerDto, Connection connection) throws SQLException;
 
     List<CustomerDto> getAllCustomer(Connection connection) throws SQLException;
+    public List<CustomerDto> searchCustomers(String query, Connection connection) throws SQLException;
+
+    List<String> getNameSuggestions(String query, Connection connection) throws SQLException;
 }

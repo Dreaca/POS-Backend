@@ -1,6 +1,7 @@
 package lk.ijse.gdse.pos_backend.controller;
 
 import jakarta.json.Json;
+import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -68,18 +69,22 @@ public class CustomerController extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if(!req.getContentType().toLowerCase().startsWith("application/json")||req.getContentType() == null){
-            resp.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
-        }
+
         CustomerDataProcess dataProcess = new CustomerDataProcess();
+        resp.setContentType("application/json")
+        ;
         try(var writer = resp.getWriter()){
             var id = req.getParameter("customerId");
+            System.out.println("id");
+
             boolean flag = dataProcess.deleteCustomer(id, connection);
             if(flag){
                 writer.write("{\"status\":\"success\"}");
+                resp.setStatus(HttpServletResponse.SC_OK);
             }
             else{
                 writer.write("{\"status\":\"error\"}");
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
         }
         catch (Exception e) {
@@ -101,12 +106,14 @@ public class CustomerController extends HttpServlet {
             boolean b = dataProcess.updateCustomer(id, updatedCustomer, connection);
             if (b) {
                 writer.write("{\"status\":\"success\"}");
+                resp.setStatus(HttpServletResponse.SC_OK);
             }
             else {
                 writer.write("{\"status\":\"error\"}");
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
     //TODO : get customer
@@ -132,6 +139,45 @@ public class CustomerController extends HttpServlet {
                 writer.write(jb.build().toString());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
+            }
+        } else if (req.getHeader("Request-Type").equals("search")) {
+            String query = req.getParameter("query").toLowerCase();
+
+
+            try (var writer = resp.getWriter()) {
+                List<CustomerDto> customers = dataProcess.searchCustomers(query, connection);
+                JsonArrayBuilder jb = Json.createArrayBuilder();
+                Jsonb jsonb = JsonbBuilder.create();
+
+                resp.setContentType("application/json");
+                for (CustomerDto customerDto : customers) {
+                    var jasonObject = Json.createReader(new StringReader(jsonb.toJson(customerDto))).readObject();
+                    jb.add(jasonObject);
+                }
+                writer.write(jb.build().toString());
+            } catch (SQLException e) {
+                e.printStackTrace();
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while processing the request.");
+            }
+        }
+        else if (req.getHeader("Request-Type").equals("suggest")) {
+            String query = req.getParameter("query").toLowerCase();
+
+            try (var writer = resp.getWriter()) {
+                List<String> names = dataProcess.getNameSuggestions(query, connection);
+                resp.setContentType("application/json");
+
+                JsonArrayBuilder jb = Json.createArrayBuilder();
+
+                resp.setContentType("application/json");
+                for (String name : names) {
+                    jb.add(name);
+                }
+                JsonArray array = jb.build();
+                writer.write(array.toString());
+            } catch (SQLException e) {
+                e.printStackTrace();
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
         }
     }

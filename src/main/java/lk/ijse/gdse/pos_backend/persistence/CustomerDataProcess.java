@@ -16,6 +16,8 @@ public final class CustomerDataProcess implements CustomerData {
     static String DELETE_CUSTOMER = "DELETE FROM customer WHERE customerId = ?";
     static String UPDATE_CUSTOMER = "UPDATE customer SET customerName = ?,customerAddress = ?,customerPhone = ? WHERE customerId = ?";
     static  String GET_ALL_CUSTOMER = "SELECT * FROM customer";
+    static String SEARCH_CUSTOMER = "SELECT * FROM customer WHERE LOWER(customerId) = ? OR LOWER(customerName) LIKE ? OR LOWER(customerAddress) LIKE ? OR LOWER(customerPhone) = ?";
+    static String GET_CUSTOMER_NAME = "SELECT customerName FROM customer WHERE LOWER(customerName) LIKE ?";
     @Override
     public CustomerDto getCustomer(String customerId, Connection connection) {
         CustomerDto customerDto = new CustomerDto();
@@ -74,14 +76,16 @@ public final class CustomerDataProcess implements CustomerData {
     @Override
     public boolean updateCustomer(String customerId, CustomerDto customerDto, Connection connection) throws SQLException {
         try (var pstm = connection.prepareStatement(UPDATE_CUSTOMER)){
-            pstm.setString(1,customerDto.getCustomerId());
-            pstm.setString(2,customerDto.getCustomerName());
-            pstm.setString(3,customerDto.getCustomerAddress());
-            pstm.setString(4,customerDto.getCustomerPhone());
+
+            pstm.setString(4,customerDto.getCustomerId());
+            pstm.setString(1,customerDto.getCustomerName());
+            pstm.setString(2,customerDto.getCustomerAddress());
+            pstm.setString(3,customerDto.getCustomerPhone());
 
             return pstm.executeUpdate() != 0;
         }
         catch (SQLException e){
+            e.printStackTrace();
             throw e;
         }
     }
@@ -108,4 +112,45 @@ public final class CustomerDataProcess implements CustomerData {
          }
 
     }
+    @Override
+    public List<CustomerDto> searchCustomers(String query, Connection connection) throws SQLException {
+
+        List<CustomerDto> customerList = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(SEARCH_CUSTOMER)) {
+            stmt.setString(1, query);
+            stmt.setString(2, "%" + query + "%");
+            stmt.setString(3, "%" + query + "%");
+            stmt.setString(4, query);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                CustomerDto customer = new CustomerDto();
+                customer.setCustomerId(rs.getString("customerId"));
+                customer.setCustomerName(rs.getString("customerName"));
+                customer.setCustomerAddress(rs.getString("customerAddress"));
+                customer.setCustomerPhone(rs.getString("customerPhone"));
+                customerList.add(customer);
+            }
+        }
+        return customerList;
+    }
+
+    @Override
+    public List<String> getNameSuggestions(String query, Connection connection) throws SQLException {
+        List<String> nameList = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(GET_CUSTOMER_NAME)) {
+            stmt.setString(1, query + "%");
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                nameList.add(rs.getString("customerName"));
+            }
+        } catch (SQLException e) {
+            throw(e);
+        }
+        return nameList;
+    }
+
 }
