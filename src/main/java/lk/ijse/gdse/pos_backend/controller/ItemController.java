@@ -71,12 +71,15 @@ public class ItemController extends HttpServlet {
                 List<ItemDto> itemList = itemDataProcess.searchItem(qur,connection);
                 JsonArrayBuilder jb = Json.createArrayBuilder();
                 Jsonb jsonb = JsonbBuilder.create();
+
+
                 for (ItemDto itemDto : itemList){
                     var jObject = Json.createReader(new StringReader(jsonb.toJson(itemDto))).readObject();
                     jb.add(jObject);
                 }
                 writer.write(jb.build().toString());
                 resp.setStatus(HttpServletResponse.SC_OK);
+
             } catch (SQLException e) {
                 e.printStackTrace();
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -137,6 +140,7 @@ public class ItemController extends HttpServlet {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("????");
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

@@ -14,10 +14,10 @@ public final class ItemDataProcess implements ItemData {
     static String SAVE_ITEM = "INSERT INTO item(itemCode,itemName,qto,author,price) VALUES (?,?,?,?,?)";
     static String GET_ITEM = "SELECT * FROM item WHERE itemCode = ?";
     static String DELETE_ITEM = "DELETE FROM item WHERE itemCode = ?";
-    static String UPDATE_ITEM = "UPDATE item SET itemName = ?,itemName = ?,qto = ?, author = ?, price = ? WHERE itemCode = ?";
+    static String UPDATE_ITEM = "UPDATE item SET itemName = ?,qto = ?, author = ?, price = ? WHERE itemCode = ?";
     static  String GET_ALL_ITEM = "SELECT * FROM item";
-    static String SEARCH_ITEM = "SELECT * FROM item WHERE LOWER(itemCode) = ? OR LOWER(itemName) LIKE ?  OR LOWER(author) = ? OR LOWER(price) = ?";
-    static String GET_ITEM_NAME = "SELECT itemName FROM customer WHERE LOWER(itemName) LIKE ?";
+    static String SEARCH_ITEM = "SELECT * FROM item WHERE LOWER(itemCode) = ? OR LOWER(itemName) LIKE ?  OR LOWER(author) = ?";
+    static String GET_ITEM_NAME = "SELECT itemName FROM item WHERE LOWER(itemName) LIKE ?";
     @Override
     public ItemDto getItem(String itemCode, Connection connection) throws SQLException {
         ItemDto itemDto = new ItemDto();
@@ -120,8 +120,6 @@ public final class ItemDataProcess implements ItemData {
             pstm.setString(1,query);
             pstm.setString(2,"%"+query+"%");
             pstm.setString(3,"%"+query+"%");
-            pstm.setString(4,"%"+query+"%");
-            pstm.setInt(5, Integer.parseInt(query));
             ResultSet resultSet = pstm.executeQuery();
             while (resultSet.next()){
                 ItemDto itemDto = new ItemDto();
