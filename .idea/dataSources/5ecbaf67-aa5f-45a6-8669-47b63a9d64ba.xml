@@ -1035,7 +1035,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     </schema>
     <schema id="301" parent="1" name="posdb">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2024-08-25.15:17:42</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-08-25.17:52:51</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <user id="302" parent="1" name="mysql.infoschema">
@@ -1155,16 +1155,22 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     </column>
     <foreign-key id="328" parent="308" name="orderDetails_orders_orderId_fk">
       <ColNames>orderId</ColNames>
+      <OnDelete>cascade</OnDelete>
+      <OnUpdate>cascade</OnUpdate>
       <RefColNames>orderId</RefColNames>
       <RefTableName>orders</RefTableName>
     </foreign-key>
     <foreign-key id="329" parent="308" name="orderDetails_customer_customerId_fk">
       <ColNames>customerId</ColNames>
+      <OnDelete>cascade</OnDelete>
+      <OnUpdate>cascade</OnUpdate>
       <RefColNames>customerId</RefColNames>
       <RefTableName>customer</RefTableName>
     </foreign-key>
     <foreign-key id="330" parent="308" name="orderDetails_item_itemCode_fk">
       <ColNames>itemId</ColNames>
+      <OnDelete>cascade</OnDelete>
+      <OnUpdate>cascade</OnUpdate>
       <RefColNames>itemCode</RefColNames>
       <RefTableName>item</RefTableName>
     </foreign-key>
@@ -1189,28 +1195,32 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Position>2</Position>
       <StoredType>varchar(100)|0s</StoredType>
     </column>
-    <column id="336" parent="309" name="date">
+    <column id="336" parent="309" name="customerName">
       <Position>3</Position>
+      <StoredType>varchar(50)|0s</StoredType>
+    </column>
+    <column id="337" parent="309" name="date">
+      <Position>4</Position>
       <StoredType>varchar(20)|0s</StoredType>
     </column>
-    <column id="337" parent="309" name="total">
-      <Position>4</Position>
+    <column id="338" parent="309" name="total">
+      <Position>5</Position>
       <StoredType>double|0s</StoredType>
     </column>
-    <column id="338" parent="309" name="discount">
-      <Position>5</Position>
+    <column id="339" parent="309" name="discount">
+      <Position>6</Position>
       <StoredType>varchar(10)|0s</StoredType>
     </column>
-    <column id="339" parent="309" name="subTotal">
-      <Position>6</Position>
+    <column id="340" parent="309" name="subTotal">
+      <Position>7</Position>
       <StoredType>double|0s</StoredType>
     </column>
-    <index id="340" parent="309" name="PRIMARY">
+    <index id="341" parent="309" name="PRIMARY">
       <ColNames>orderId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="341" parent="309" name="PRIMARY">
+    <key id="342" parent="309" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>

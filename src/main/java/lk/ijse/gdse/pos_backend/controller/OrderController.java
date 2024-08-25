@@ -42,7 +42,7 @@ public class OrderController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
-        ItemDataProcess itemDataProcess = new ItemDataProcess();
+        OrderDataProcess orderDataProcess = new OrderDataProcess();
 
         if (req.getHeader("Request-Type").equals("getOrderId")){
             try(var writer = resp.getWriter()){
@@ -54,17 +54,16 @@ public class OrderController extends HttpServlet {
                 e.printStackTrace();
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
-        } else if (req.getHeader("Request-Type").equals("search")) {
-            String qur = req.getParameter("query").toLowerCase();
+        } else if (req.getHeader("Request-Type").equals("table")) {
 
             try(var writer = resp.getWriter()){
-                List<ItemDto> itemList = itemDataProcess.searchItem(qur,connection);
+                List<OrderDto> orderList = orderDataProcess.getAllItem(connection);
                 JsonArrayBuilder jb = Json.createArrayBuilder();
                 Jsonb jsonb = JsonbBuilder.create();
 
 
-                for (ItemDto itemDto : itemList){
-                    var jObject = Json.createReader(new StringReader(jsonb.toJson(itemDto))).readObject();
+                for (OrderDto orderDto : orderList){
+                    var jObject = Json.createReader(new StringReader(jsonb.toJson(orderDto))).readObject();
                     jb.add(jObject);
                 }
                 writer.write(jb.build().toString());
@@ -74,7 +73,7 @@ public class OrderController extends HttpServlet {
                 e.printStackTrace();
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
-        } else if (req.getHeader("Request-Type").equals("suggest")) {
+        }/* else if (req.getHeader("Request-Type").equals("suggest")) {
             String qur = req.getParameter("query").toLowerCase();
             try(var writer = resp.getWriter()){
                 List<String> suggestions = itemDataProcess.getNameSuggestions(qur,connection);
@@ -89,7 +88,7 @@ public class OrderController extends HttpServlet {
                 e.printStackTrace();
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
-        }
+        }*/
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -114,12 +113,13 @@ public class OrderController extends HttpServlet {
             OrderDto orderDto = new OrderDto(
                     requestDto.getOrderId(),
                     requestDto.getCustomerId(),
+                    requestDto.getCustomerName(),
                     requestDto.getDate(),
                     requestDto.getTotal(),
                     requestDto.getDiscount(),
                     requestDto.getSubTotal()
             );
-
+            System.out.println(requestDto);
             // Save order
             if (dp.saveOrder(orderDto, connection)) {
                 boolean allOperationsSuccessful = true;
