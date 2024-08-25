@@ -1,7 +1,7 @@
 package lk.ijse.gdse.pos_backend.persistence;
 
-import lk.ijse.gdse.pos_backend.dto.CustomerDto;
 import lk.ijse.gdse.pos_backend.dto.ItemDto;
+import lk.ijse.gdse.pos_backend.dto.OrderDetailDto;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -20,4 +20,6 @@ public sealed interface ItemData permits ItemDataProcess {
     public List<ItemDto> searchItem(String query, Connection connection) throws SQLException;
 
     List<String> getNameSuggestions(String query, Connection connection) throws SQLException;
+
+    boolean updateItemQty(Connection connection, OrderDetailDto orderDetailDto);
 }

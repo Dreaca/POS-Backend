@@ -2,7 +2,6 @@ package lk.ijse.gdse.pos_backend.persistence;
 
 import lk.ijse.gdse.pos_backend.dto.CustomerDto;
 
-import java.awt.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;

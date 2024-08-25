@@ -5,25 +5,21 @@ import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.ijse.gdse.pos_backend.dto.ItemDto;
-import lk.ijse.gdse.pos_backend.persistence.ItemData;
 import lk.ijse.gdse.pos_backend.persistence.ItemDataProcess;
 import lk.ijse.gdse.pos_backend.util.UtilProcess;
 
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(urlPatterns = "/item")

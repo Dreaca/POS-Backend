@@ -13,18 +13,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import lk.ijse.gdse.pos_backend.dto.CustomerDto;
 import lk.ijse.gdse.pos_backend.persistence.CustomerDataProcess;
 import lk.ijse.gdse.pos_backend.util.UtilProcess;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(urlPatterns = "/customer",loadOnStartup = 2)

@@ -1,7 +1,7 @@
 package lk.ijse.gdse.pos_backend.persistence;
 
-import lk.ijse.gdse.pos_backend.dto.CustomerDto;
 import lk.ijse.gdse.pos_backend.dto.ItemDto;
+import lk.ijse.gdse.pos_backend.dto.OrderDetailDto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +18,7 @@ public final class ItemDataProcess implements ItemData {
     static  String GET_ALL_ITEM = "SELECT * FROM item";
     static String SEARCH_ITEM = "SELECT * FROM item WHERE LOWER(itemCode) = ? OR LOWER(itemName) LIKE ?  OR LOWER(author) = ?";
     static String GET_ITEM_NAME = "SELECT itemName FROM item WHERE LOWER(itemName) LIKE ?";
+    static String CHANGE_ITEM_QTY = "UPDATE item SET qto = (qto - ?) WHERE LOWER(itemCode) = ?";
     @Override
     public ItemDto getItem(String itemCode, Connection connection) throws SQLException {
         ItemDto itemDto = new ItemDto();
@@ -154,5 +155,16 @@ public final class ItemDataProcess implements ItemData {
             throw e;
         }
         return suggestions;
+    }
+
+    @Override
+    public boolean updateItemQty(Connection connection, OrderDetailDto orderDetailDto) {
+        try(var pstm = connection.prepareStatement(CHANGE_ITEM_QTY)){
+            pstm.setInt(1,orderDetailDto.getQty());
+            pstm.setString(2,orderDetailDto.getItemId());
+            return pstm.executeUpdate() !=0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
