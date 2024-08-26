@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.ijse.gdse.pos_backend.dto.*;
 import lk.ijse.gdse.pos_backend.persistence.ItemDataProcess;
+import lk.ijse.gdse.pos_backend.persistence.OrderData;
 import lk.ijse.gdse.pos_backend.persistence.OrderDataProcess;
 import lk.ijse.gdse.pos_backend.persistence.OrderDetailDataProcess;
 import lk.ijse.gdse.pos_backend.util.UtilProcess;
@@ -73,23 +74,9 @@ public class OrderController extends HttpServlet {
                 e.printStackTrace();
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
-        }/* else if (req.getHeader("Request-Type").equals("suggest")) {
-            String qur = req.getParameter("query").toLowerCase();
-            try(var writer = resp.getWriter()){
-                List<String> suggestions = itemDataProcess.getNameSuggestions(qur,connection);
-                JsonArrayBuilder jb = Json.createArrayBuilder();
-
-                for (String suggestion : suggestions){
-                    jb.add(suggestion);
-                }
-                JsonArray array = jb.build();
-                writer.write(array.toString());
-            } catch (SQLException e) {
-                e.printStackTrace();
-                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            }
-        }*/
+        }
     }
+    //TRANSACTION
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (!req.getContentType().toLowerCase().startsWith("application/json") || req.getContentType() == null) {
@@ -148,7 +135,7 @@ public class OrderController extends HttpServlet {
 
                 if (allOperationsSuccessful) {
                     connection.commit();  // Commit transaction
-                    writer.write("{\"message\":\"Order Saved\"}");
+                    writer.write("ORDER SAVED");
                     resp.setStatus(HttpServletResponse.SC_OK);
                 } else {
                     connection.rollback();  // Rollback transaction
@@ -174,4 +161,17 @@ public class OrderController extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        OrderDataProcess dp = new OrderDataProcess();
+        var orderId = req.getParameter("orderId");
+        try (var writer = resp.getWriter()) {
+            if (dp.deleteOrder(orderId,connection)) {
+                resp.setStatus(HttpServletResponse.SC_OK);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

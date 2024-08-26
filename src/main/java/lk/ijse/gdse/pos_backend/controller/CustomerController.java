@@ -73,11 +73,11 @@ public class CustomerController extends HttpServlet {
 
             boolean flag = dataProcess.deleteCustomer(id, connection);
             if(flag){
-                writer.write("{\"status\":\"success\"}");
+                writer.write("Deleted Successfully");
                 resp.setStatus(HttpServletResponse.SC_OK);
             }
             else{
-                writer.write("{\"status\":\"error\"}");
+                writer.write("Error! Action Failed !");
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
         }
@@ -99,11 +99,11 @@ public class CustomerController extends HttpServlet {
             var updatedCustomer = customerJson.fromJson(req.getReader(), CustomerDto.class);
             boolean b = dataProcess.updateCustomer(id, updatedCustomer, connection);
             if (b) {
-                writer.write("{\"status\":\"success\"}");
+                writer.write("Updated Succcessfuly");
                 resp.setStatus(HttpServletResponse.SC_OK);
             }
             else {
-                writer.write("{\"status\":\"error\"}");
+                writer.write("Error! Action Failed !");
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
         } catch (SQLException e) {

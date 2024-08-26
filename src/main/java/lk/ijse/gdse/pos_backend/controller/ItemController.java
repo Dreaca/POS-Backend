@@ -136,7 +136,6 @@ public class ItemController extends HttpServlet {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("????");
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

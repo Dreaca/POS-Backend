@@ -42,7 +42,10 @@ public final class OrderDataProcess implements OrderData {
 
     @Override
     public boolean deleteOrder(String orderId, Connection connection) throws SQLException {
-        return false;
+        try(var pstm = connection.prepareStatement(DELETE_ORDER)){
+            pstm.setString(1, orderId);
+            return pstm.executeUpdate()!= 0;
+        }
     }
 
     @Override
