@@ -97,10 +97,10 @@ public final class CustomerDataProcess implements CustomerData {
              ResultSet resultSet = pstm.executeQuery();
              while (resultSet.next()){
                  CustomerDto customerDto = new CustomerDto(
-                         resultSet.getString("customerId"),
-                         resultSet.getString("customerName"),
-                         resultSet.getString("customerAddress"),
-                         resultSet.getString("customerPhone")
+                         resultSet.getString("id"),
+                         resultSet.getString("name"),
+                         resultSet.getString("address"),
+                         resultSet.getString("phone")
                  );
                  customerDtoList.add(customerDto);
                  }
@@ -126,10 +126,10 @@ public final class CustomerDataProcess implements CustomerData {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 CustomerDto customer = new CustomerDto();
-                customer.setCustomerId(rs.getString("customerId"));
-                customer.setCustomerName(rs.getString("customerName"));
-                customer.setCustomerAddress(rs.getString("customerAddress"));
-                customer.setCustomerPhone(rs.getString("customerPhone"));
+                customer.setCustomerId(rs.getString("id"));
+                customer.setCustomerName(rs.getString("name"));
+                customer.setCustomerAddress(rs.getString("address"));
+                customer.setCustomerPhone(rs.getString("phone"));
                 customerList.add(customer);
             }
         }
@@ -145,7 +145,7 @@ public final class CustomerDataProcess implements CustomerData {
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                nameList.add(rs.getString("customerName"));
+                nameList.add(rs.getString("name"));
             }
         } catch (SQLException e) {
             throw(e);

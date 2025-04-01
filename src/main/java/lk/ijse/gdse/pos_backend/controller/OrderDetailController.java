@@ -22,7 +22,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(urlPatterns = "/orderDetails")
+@WebServlet(urlPatterns = "/api/v3/orderdetail")
 public class OrderDetailController extends HttpServlet {
     Connection connection;
 

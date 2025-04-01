@@ -26,7 +26,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(urlPatterns = "/order",loadOnStartup = 2)
+@WebServlet(urlPatterns = "/api/v3/order",loadOnStartup = 2)
 public class OrderController extends HttpServlet {
     Connection connection;
     @Override

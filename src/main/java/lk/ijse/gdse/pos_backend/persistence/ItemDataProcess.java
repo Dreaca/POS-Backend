@@ -28,7 +28,7 @@ public final class ItemDataProcess implements ItemData {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 itemDto.setItemCode(resultSet.getString("itemCode"));
-                itemDto.setItemName(resultSet.getString("itemName"));
+                itemDto.setItemName(resultSet.getString("desc"));
                 itemDto.setQto(resultSet.getInt("qto"));
                 itemDto.setAuthor(resultSet.getString("author"));
                 itemDto.setPrice(resultSet.getInt("price"));
@@ -99,7 +99,7 @@ public final class ItemDataProcess implements ItemData {
             while (resultSet.next()){
                 ItemDto itemDto = new ItemDto(
                         resultSet.getString("itemCode"),
-                        resultSet.getString("itemName"),
+                        resultSet.getString("desc"),
                         resultSet.getInt("qto"),
                         resultSet.getString("author"),
                         resultSet.getInt("price")
@@ -125,7 +125,7 @@ public final class ItemDataProcess implements ItemData {
             while (resultSet.next()){
                 ItemDto itemDto = new ItemDto();
                 itemDto.setItemCode(resultSet.getString("itemCode"));
-                itemDto.setItemName(resultSet.getString("itemName"));
+                itemDto.setItemName(resultSet.getString("desc"));
                 itemDto.setQto(resultSet.getInt("qto"));
                 itemDto.setAuthor(resultSet.getString("author"));
                 itemDto.setPrice(resultSet.getInt("price"));
@@ -147,7 +147,7 @@ public final class ItemDataProcess implements ItemData {
 
             ResultSet resultSet = pstm.executeQuery();
             while (resultSet.next()){
-                suggestions.add(resultSet.getString("itemName"));
+                suggestions.add(resultSet.getString("desc"));
             }
             resultSet.close();
         }
